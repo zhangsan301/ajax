@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <script type="text/javascript" src="js/my.js"></script>
+    <script type="text/javascript">
+        //验证录入的用户名是否可以使用
+        function checkUsername(){
+            //1.得到文本框中的信息
+            var usernameValue = document.getElementById("username").value;
+            // alert(usernameValue);
+
+            //2.使用ajax向服务器发送请求，并且携带username信息
+            //2.1获取XMLHttpRequest对象
+            var xmlHttp= getXmlHttpRequest();
+            //2.2设置回调函数
+            xmlHttp.onreadystatechange = function(){
+
+                //2.5根据服务器响应情况来处理响应数据
+                if(xmlHttp.readyState == 4){
+                    if(xmlHttp.status == 200){
+                        //2.5根据服务器响应情况处理响应数据
+                        var responseMsg = xmlHttp.responseText;
+                        //3.处理服务器响应的数据,在span块中显示信息
+                        // alert(responseMsg);
+                        document.getElementById("username_msg").innerHTML=responseMsg;
+                    }
+                }
+            };
+
+            //2.3open.,设置请求的路径与方式
+            xmlHttp.open("POST","/ajax/userServlet");
+
+            //2.4发送请求
+            xmlHttp.setRequestHeader("content-type","application/x-www-form-urlencoded");
+            xmlHttp.send("username="+usernameValue);
+            //3.处理服务器响应的数据,在span块中显示信息
+
+
+
+        }
+
+    </script>
+
+</head>
+<body>
+
+   <input type="text" id="username" onblur="checkUsername()">
+   <span id="username_msg"></span>
+
+</body>
+</html>
+
+
+
